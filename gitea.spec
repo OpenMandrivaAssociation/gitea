@@ -1,7 +1,7 @@
 #define pre rc2
 
 Name:		gitea
-Version:	1.9.5
+Version:	1.9.6
 Release:	%{?pre:0.%{pre}.}1
 Summary:	Git with a cup of tea, painless self-hosted git service
 License:	MIT
@@ -19,7 +19,7 @@ Source1:	godeps-for-gitea-%{version}.tar.xz
 
 Source10:	gitea.service
 Source11:	gitea.service.d.conf
-Source12:	app-%version.ini
+Source12:	app.ini
 
 Patch0:		make-version.patch
 
