@@ -30,6 +30,7 @@ Requires:	git-core
 BuildRequires:	golang make
 BuildRequires:	pam-devel
 BuildRequires:	pkgconfig(sqlite3)
+BuildRequires:	nodejs
 
 %description
 The goal of this project is to make the easiest, fastest, and most painless way
