@@ -14,7 +14,7 @@ Type=simple
 User=gitea
 Group=gitea
 WorkingDirectory=/srv/gitea/
-ExecStart=/usr/bin/gitea web -c /etc/gitea/app.ini
+ExecStart=/usr/bin/gitea web -c /etc/gitea/conf/app.ini
 Restart=always
 Environment=USER=gitea HOME=/srv/gitea GITEA_WORK_DIR=/srv/gitea
 PrivateTmp=true
