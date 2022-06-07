@@ -1,10 +1,10 @@
-%define __debug_package %{nil}
-%define _debug_package %{nil}
+#define __debug_package %{nil}
+#define _debug_package %{nil}
 %define debug_package %{nil}
 #define pre rc2
 
 Name:		gitea
-Version:	1.16.5
+Version:	1.16.8
 Release:	1
 Summary:	Git with a cup of tea, painless self-hosted git service
 License:	MIT
