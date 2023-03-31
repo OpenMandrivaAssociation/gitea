@@ -5,7 +5,7 @@
 
 Name:		gitea
 Version:	1.16.8
-Release:	2
+Release:	3
 Summary:	Git with a cup of tea, painless self-hosted git service
 License:	MIT
 Group:		Development/Other
