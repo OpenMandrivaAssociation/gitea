@@ -1,11 +1,9 @@
-#define __debug_package %{nil}
-#define _debug_package %{nil}
-%define debug_package %{nil}
+%undefine _debugsource_packages
 #define pre rc2
 
 Name:		gitea
-Version:	1.16.8
-Release:	3
+Version:	1.22.2
+Release:	1
 Summary:	Git with a cup of tea, painless self-hosted git service
 License:	MIT
 Group:		Development/Other
@@ -40,14 +38,14 @@ of setting up a self-hosted Git service. It is similar to GitHub, Bitbucket,
 and Gitlab. Gitea is a fork of Gogs.
 
 %prep
-%autosetup -p1 -c %{name}-%{version}
+%autosetup -p1 -n %{name}-src-%{version}
 
 %build
 #export GOPATH="`pwd`/.godeps"
 #export GOPROXY="file://`pwd`/.godeps"
 #export NODE_OPTIONS=--openssl-legacy-provider
 
-TAGS="bindata sqlite sqlite_unlock_notify pam" make VERSION=%version  build
+TAGS="bindata sqlite sqlite_unlock_notify pam" make VERSION=%version build
 
 %install
 mkdir -p %buildroot/srv/%{name}
