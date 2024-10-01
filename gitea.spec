@@ -61,11 +61,11 @@ mkdir -p %buildroot%_docdir/%name
 install -Dm 0644 "custom/conf/app.example.ini" \
 	%buildroot%_docdir/%name/default-app.ini
 
-%pre
-%_pre_useradd gitea /srv/gitea /sbin/nologin
-
-%postun
-%_postun_userdel gitea
+mkdir -p %{buildroot}%{_sysusersdir}
+cat >%{buildroot}%{_sysusersdir}/%{name}.conf <<'EOF'
+g %{name} - -
+u %{name} - "gitea server" /srv/gitea /sbin/nologin
+EOF
 
 %files
 %attr(6755,root,%name) %_bindir/%name
@@ -78,3 +78,4 @@ install -Dm 0644 "custom/conf/app.example.ini" \
 %_unitdir/%name.service
 %_docdir/%name/default-app.ini
 %doc *.md
+%{_sysusersdir}/*.conf
