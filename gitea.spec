@@ -2,7 +2,7 @@
 #define pre rc2
 
 Name:		gitea
-Version:	1.22.4
+Version:	1.23.7
 Release:	1
 Summary:	Git with a cup of tea, painless self-hosted git service
 License:	MIT
