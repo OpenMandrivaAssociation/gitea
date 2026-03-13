@@ -13,14 +13,18 @@ RestartSec=2s
 Type=simple
 User=gitea
 Group=gitea
+RuntimeDirectory=gitea
 WorkingDirectory=/srv/gitea/
 ExecStart=/usr/bin/gitea web -c /etc/gitea/conf/app.ini
 Restart=always
 Environment=USER=gitea HOME=/srv/gitea GITEA_WORK_DIR=/srv/gitea
 PrivateTmp=true
 PrivateDevices=true
-ProtectSystem=true
+ProtectSystem=strict
 ProtectHome=true
+NoNewPrivileges=true
+ReadWritePaths=/srv/gitea -/run/postgresql -/run/mysqld /var/log/gitea
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
 
 [Install]
 WantedBy=multi-user.target
