@@ -1,10 +1,9 @@
 [Unit]
 Description=Gitea (Git with a cup of tea)
 After=network.target
-After=mariadb.service
-After=postgresql.service
-After=memcached.service
-After=redis.service
+Requires=postgresql.service
+BindsTo=redis@gitea.service
+After=postgresql.service redis@gitea.service
 
 [Service]
 LimitMEMLOCK=infinity
@@ -15,15 +14,27 @@ User=gitea
 Group=gitea
 RuntimeDirectory=gitea
 WorkingDirectory=/srv/gitea/
-ExecStart=/usr/bin/gitea web -c /etc/gitea/conf/app.ini
+ExecStart=/usr/bin/gitea web -c /etc/gitea/app.ini
 Restart=always
-Environment=USER=gitea HOME=/srv/gitea GITEA_WORK_DIR=/srv/gitea
+Environment=USER=gitea HOME=/srv/gitea GITEA_WORK_DIR=/srv/gitea GITEA_CUSTOM=/usr/share/gitea
 PrivateTmp=true
 PrivateDevices=true
 ProtectSystem=strict
 ProtectHome=true
+ProtectClock=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectHostname=true
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
 NoNewPrivileges=true
-ReadWritePaths=/srv/gitea -/run/postgresql -/run/mysqld /var/log/gitea
+SystemCallArchitectures=native
+ReadWritePaths=/srv/gitea -/run/postgresql /var/log/gitea /etc/gitea
 RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
 
 [Install]

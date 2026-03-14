@@ -1,0 +1,13 @@
+# Redis instance for gitea
+port 0
+unixsocket /run/redis/gitea/redis.sock
+unixsocketperm 0666
+save 900 1
+save 300 10
+save 60 10000
+appendonly yes
+appendfilename "gitea.aof"
+dir /srv/redis/gitea
+maxmemory-policy allkeys-lru
+maxmemory 256m
+loglevel notice
