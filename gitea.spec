@@ -2,7 +2,7 @@
 #define pre rc2
 
 Name:		gitea
-Version:	1.26.4
+Version:	1.27.1
 Release:	1
 Summary:	Git with a cup of tea, painless self-hosted git service
 License:	MIT
@@ -36,7 +36,7 @@ of setting up a self-hosted Git service. It is similar to GitHub, Bitbucket,
 and Gitlab. Gitea is a fork of Gogs.
 
 %prep
-%autosetup -p1 -n %{name}-src-%{version}
+%autosetup -p1 -n gitea-src-1.27.1
 
 %build
 %make_build frontend
