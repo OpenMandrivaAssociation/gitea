@@ -11,6 +11,8 @@ Url:		https://gitea.io/
 
 # https://github.com/go-gitea/gitea
 Source0:	https://github.com/go-gitea/gitea/releases/download/v%{version}/gitea-src-%{version}.tar.gz
+# pnpm store for the frontend, plus the pnpm 12.6 binaries. ABF has no network.
+Source1:	gitea-%{version}-npm-vendor.tar.xz
 
 Source10:	gitea.service
 Source11:	gitea.service.d.conf
@@ -36,17 +38,27 @@ The goal of this project is to make the easiest, fastest, and most painless way
 of setting up a self-hosted Git service. It is similar to GitHub, Bitbucket,
 and Gitlab. Gitea is a fork of Gogs.
 
+%ifarch aarch64
+%define gitea_pnpm pnpm-linux-arm64
+%else
+%define gitea_pnpm pnpm-linux-x64
+%endif
+
 %prep
 %autosetup -p1 -n gitea-src-%{version}
+tar -C %{_builddir} -xf %{SOURCE1}
 
 %build
 # go.mod asks for toolchain go1.27.1. Stay on the system Go; ABF has no network.
 export GOTOOLCHAIN=local
-# The release tarball already ships public/assets/.vite. Rebuilding pulls pnpm
-# modules, which the builders cannot download.
-if [ ! -f public/assets/.vite/manifest.json ]; then
-	%make_build frontend
-fi
+install -m 0755 %{_builddir}/%{gitea_pnpm} %{_builddir}/pnpm
+export PATH=%{_builddir}:$PATH
+# The release tarball ships a prebuilt Vite bundle under public/assets. Drop it
+# and compile web_src here. Images (svg/png) stay; they are not compiler output.
+rm -rf public/assets/js public/assets/css public/assets/.vite
+pnpm install --offline --frozen-lockfile --store-dir %{_builddir}/pnpm-store
+touch node_modules
+%make_build frontend
 TAGS="bindata sqlite sqlite_unlock_notify pam" make VERSION=%version build
 
 %install
