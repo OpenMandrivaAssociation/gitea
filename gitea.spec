@@ -2,7 +2,7 @@
 #define pre rc2
 
 Name:		gitea
-Version:	1.27.3
+Version:	28.0.0
 Release:	1
 Summary:	Git with a cup of tea, painless self-hosted git service
 License:	MIT
@@ -20,7 +20,8 @@ Source15:	gitea.redis
 
 Requires:	git-core
 
-BuildRequires:	golang make
+BuildRequires:	golang >= 1.27
+BuildRequires:	make
 BuildRequires:	pam-devel
 BuildRequires:	pkgconfig(sqlite3)
 BuildRequires:	nodejs
@@ -39,7 +40,13 @@ and Gitlab. Gitea is a fork of Gogs.
 %autosetup -p1 -n gitea-src-%{version}
 
 %build
-%make_build frontend
+# go.mod asks for toolchain go1.27.1. Stay on the system Go; ABF has no network.
+export GOTOOLCHAIN=local
+# The release tarball already ships public/assets/.vite. Rebuilding pulls pnpm
+# modules, which the builders cannot download.
+if [ ! -f public/assets/.vite/manifest.json ]; then
+	%make_build frontend
+fi
 TAGS="bindata sqlite sqlite_unlock_notify pam" make VERSION=%version build
 
 %install
